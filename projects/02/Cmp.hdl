@@ -1,0 +1,19 @@
+/*
+    copare two bits
+    | a | b | out |
+    | 0 | 0 |  1  |
+    | 0 | 1 |  0  |
+    | 1 | 0 |  0  |
+    | 1 | 1 |  1  |
+*/
+
+CHIP Cmp {
+
+    IN a,b;
+    OUT out;
+
+    PARTS:
+        
+        Xor (a=a, b=b, out=xorab);
+        Not (in=xorab, out=out);
+}
