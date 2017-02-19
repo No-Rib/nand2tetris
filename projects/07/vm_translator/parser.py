@@ -4,8 +4,15 @@ import re
 
 _COMMENT_RE = re.compile("//.*$")
 
+_AL_TOKEN_RE = re.compile("[\w\-.]+")
+_NUM_TOKEN_RE = re.compile("\d+")
+_TOKEN_RE = re.compile("[\w\-.]+|\d+")
+
 _OK_CODE = 0
 _EOF_CODE = 1
+
+AL_TOKEN = 0
+NUM_TOKEN = 1
 
 class Parser(object):
 	"""Class thaht handles vm-code file parsing."""
@@ -37,7 +44,19 @@ class Parser(object):
 	@classmethod
 	def _tokenize(cls, cmd):
 		"""Returns tokenized command."""
-		return cmd
+
+		return [cls._def_token(t) for t in _TOKEN_RE.findall(cmd)]
+
+	@classmethod
+	def _def_token(cls, token):
+		"""Gives token class to token."""
+
+		if _NUM_TOKEN_RE.match(token):
+			return (NUM_TOKEN, token)
+		elif _AL_TOKEN_RE.match(token):
+			return (AL_TOKEN, token)
+		else:
+			raise
 
 	def _get_next_cmd(self):
 		"""Sets next command."""
